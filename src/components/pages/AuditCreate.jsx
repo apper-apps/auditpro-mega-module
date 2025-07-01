@@ -78,8 +78,8 @@ const handleSubmit = async (e) => {
         pageType: formData.pageType
       }
       
-      // Perform comprehensive audit with progress tracking
-      const newAudit = await auditService.performAudit(auditData, (progress) => {
+      // Perform comprehensive audit with retry logic and progress tracking
+      const newAudit = await auditService.performAuditWithRetry(auditData, (progress) => {
         setAuditProgress({
           phase: progress.phase,
           progress: progress.progress,
@@ -91,10 +91,33 @@ const handleSubmit = async (e) => {
       navigate(`/audit/${newAudit.Id}`)
     } catch (error) {
       console.error('Error performing audit:', error)
-      toast.error(error.message || 'Failed to complete audit. Please try again.')
+      
+      // Enhanced error handling with specific messages
+      let errorMessage
+      if (error.message.includes('Invalid URL format')) {
+        errorMessage = 'Please enter a valid store URL (e.g., yourstore.myshopify.com)'
+      } else if (error.message.includes('Network timeout')) {
+        errorMessage = 'Connection timeout. Please check your internet connection and try again.'
+      } else if (error.message.includes('Unable to access')) {
+        errorMessage = error.message
+      } else {
+        errorMessage = 'Failed to complete audit. Please try again.'
+      }
+      
+      toast.error(errorMessage)
+      setAuditProgress({ 
+        phase: 'Audit failed', 
+        progress: 0, 
+        message: 'Ready to try again' 
+      })
     } finally {
       setLoading(false)
-      setAuditProgress({ phase: '', progress: 0, message: '' })
+      // Don't clear progress immediately on error to show failure state
+      setTimeout(() => {
+        if (!loading) {
+          setAuditProgress({ phase: '', progress: 0, message: '' })
+        }
+      }, 3000)
     }
   }
 

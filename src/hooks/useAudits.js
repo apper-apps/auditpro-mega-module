@@ -6,15 +6,26 @@ export const useAudits = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   
-  const loadAudits = async () => {
+const loadAudits = async () => {
     try {
       setLoading(true)
       setError('')
       const data = await auditService.getAll()
       setAudits(data)
     } catch (err) {
-      setError('Failed to load audits')
       console.error('Error loading audits:', err)
+      
+      // Enhanced error handling with specific error types
+      let errorMessage
+      if (err.message?.includes('Network')) {
+        errorMessage = 'Network error. Please check your connection and try again.'
+      } else if (err.message?.includes('timeout')) {
+        errorMessage = 'Request timed out. Please refresh the page.'
+      } else {
+        errorMessage = 'Failed to load audits. Please try refreshing the page.'
+      }
+      
+      setError(errorMessage)
     } finally {
       setLoading(false)
     }

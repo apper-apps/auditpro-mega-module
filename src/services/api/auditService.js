@@ -1,3 +1,4 @@
+// Audit Service - UX Analysis and Baymard Institute Compliance
 // Baymard Institute UX Guidelines Database
 const baymardGuidelines = {
   checkout: [
@@ -547,7 +548,7 @@ const mockAudits = [
         productPages: { passed: 8, failed: 2, total: 10 },
         filtering: { passed: 8, failed: 2, total: 10 },
         trustSignals: { passed: 9, failed: 1, total: 10 },
-        mobile: { passed: 9, failed: 1, total: 10 }
+mobile: { passed: 9, failed: 1, total: 10 }
       },
       topRecommendations: [
         {
@@ -561,6 +562,120 @@ const mockAudits = [
   }
 ]
 
+class AuditService {
+  constructor() {
+    this.audits = [...mockAudits]
+  }
+  
+  async getAll() {
+    await this.delay(300)
+    return [...this.audits]
+  }
+  
+  async getById(id) {
+    await this.delay(250)
+    const audit = this.audits.find(audit => audit.Id === id)
+    if (!audit) {
+      throw new Error(`Audit with Id ${id} not found`)
+    }
+    return { ...audit }
+  }
+  
+  async create(auditData) {
+    await this.delay(400)
+    const newAudit = {
+      ...auditData,
+      Id: Math.max(...this.audits.map(a => a.Id)) + 1,
+      timestamp: new Date().toISOString()
+    }
+    this.audits.unshift(newAudit)
+    return { ...newAudit }
+  }
+  
+  async update(id, updateData) {
+    await this.delay(350)
+    const index = this.audits.findIndex(audit => audit.Id === id)
+    if (index === -1) {
+      throw new Error(`Audit with Id ${id} not found`)
+    }
+    this.audits[index] = { ...this.audits[index], ...updateData }
+    return { ...this.audits[index] }
+  }
+  
+  async delete(id) {
+    await this.delay(300)
+    const index = this.audits.findIndex(audit => audit.Id === id)
+    if (index === -1) {
+      throw new Error(`Audit with Id ${id} not found`)
+    }
+    this.audits.splice(index, 1)
+    return true
+  }
+  
+  async delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms))
+  }
+
+  // URL validation method
+  async validateStoreUrl(storeUrl) {
+    // Clean and validate URL format
+    const cleanUrl = storeUrl.replace(/^https?:\/\//, '').replace(/\/$/, '')
+    
+    // Basic URL format validation
+    const urlPattern = /^[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?)*$/
+    if (!urlPattern.test(cleanUrl)) {
+      throw new Error('Invalid URL format')
+    }
+    
+    // For demo purposes, simulate network validation
+    // In production, this would make actual HTTP requests
+    await this.delay(500)
+    
+    // Simulate occasional network issues (much lower rate than before)
+    if (Math.random() < 0.01) { // 1% chance for demo purposes
+      throw new Error('Network timeout - please try again')
+    }
+    
+    return true
+  }
+
+  // Enhanced error handling for audit operations
+  async performAuditWithRetry(auditData, progressCallback, maxRetries = 2) {
+    let lastError = null
+    
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        return await this.performAudit(auditData, progressCallback)
+      } catch (error) {
+        lastError = error
+        
+        // Don't retry validation errors or user errors
+        if (error.message.includes('Invalid URL format') || 
+            error.message.includes('required')) {
+          throw error
+        }
+        
+        // Only retry on network or temporary errors
+        if (attempt < maxRetries && 
+            (error.message.includes('Network timeout') || 
+             error.message.includes('Unable to access'))) {
+          
+          progressCallback({
+            phase: `Retrying... (Attempt ${attempt + 1}/${maxRetries})`,
+            progress: 0,
+            message: `Previous attempt failed: ${error.message}`
+          })
+          
+          await this.delay(1000 * attempt) // Exponential backoff
+          continue
+        }
+        
+        throw error
+      }
+    }
+    
+    throw lastError
+  }
 class AuditService {
   constructor() {
     this.audits = [...mockAudits]
@@ -717,12 +832,13 @@ this.audits.splice(index, 1)
         progress: 5,
         message: `Connecting to ${auditData.storeUrl}...`
       })
+await this.delay(phases[0].duration)
       
-      await this.delay(phases[0].duration)
-      
-      // Simulate URL validation
-      if (Math.random() < 0.05) { // 5% chance of URL validation failure
-        throw new Error('Unable to access the provided URL. Please check if the store is accessible.')
+      // Perform actual URL validation
+      try {
+        await this.validateStoreUrl(auditData.storeUrl)
+      } catch (error) {
+        throw new Error(`Unable to access the provided URL: ${error.message}. Please check if the store is accessible and try again.`)
       }
       
       totalProgress += phases[0].weight

@@ -17,15 +17,26 @@ const Dashboard = () => {
   const [error, setError] = useState('')
   const navigate = useNavigate()
   
-  const loadAudits = async () => {
+const loadAudits = async () => {
     try {
       setLoading(true)
       setError('')
       const data = await auditService.getAll()
       setAudits(data)
     } catch (err) {
-      setError('Failed to load audits')
       console.error('Error loading audits:', err)
+      
+      // Enhanced error handling
+      let errorMessage
+      if (err.message?.includes('Network')) {
+        errorMessage = 'Connection error. Please check your internet connection.'
+      } else if (err.message?.includes('timeout')) {
+        errorMessage = 'Request timed out. Please try again.'
+      } else {
+        errorMessage = 'Failed to load audits. Please try again.'
+      }
+      
+      setError(errorMessage)
     } finally {
       setLoading(false)
     }
