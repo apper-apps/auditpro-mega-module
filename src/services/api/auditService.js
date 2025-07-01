@@ -1074,6 +1074,4 @@ class AuditService {
     }]
   }
 }
-
-export const auditService = new AuditService()
 export const auditService = new AuditService()
