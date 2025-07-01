@@ -1,6 +1,3 @@
-import React from "react";
-import Error from "@/components/ui/Error";
-// Baymard Institute UX Guidelines Database
 // Baymard Institute UX Guidelines Database
 const baymardGuidelines = {
   checkout: [
@@ -699,6 +696,7 @@ this.audits.splice(index, 1)
       categoryDetails,
       topRecommendations
     }
-  }
+}
+}
 
 export const auditService = new AuditService()
