@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import Layout from '@/components/organisms/Layout'
 import Dashboard from '@/components/pages/Dashboard'
 import AuditDetail from '@/components/pages/AuditDetail'
