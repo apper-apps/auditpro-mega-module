@@ -58,9 +58,10 @@ const AuditDetail = () => {
   if (error) return <Error message={error} onRetry={loadAudit} />
   if (!audit) return <Error message="Audit not found" />
   
-  const tabs = [
+const tabs = [
     { id: 'issues', label: 'Issues', count: audit.issues.length, icon: 'AlertTriangle' },
     { id: 'recommendations', label: 'Recommendations', count: audit.recommendations.length, icon: 'Lightbulb' },
+    { id: 'compliance', label: 'Baymard Compliance', count: Object.keys(audit.baymardCompliance?.categoryScores || {}).length, icon: 'Award' },
     { id: 'screenshots', label: 'Screenshots', count: audit.screenshots.length, icon: 'Camera' }
   ]
   
@@ -120,9 +121,16 @@ const AuditDetail = () => {
               ))}
             </div>
           </div>
-          
-          <div className="flex flex-col sm:flex-row items-center gap-4">
-            <ScoreRing score={audit.overallScore} size="lg" label="overall" />
+<div className="flex flex-col sm:flex-row items-center gap-6">
+            <div className="flex items-center gap-4">
+              <ScoreRing score={audit.overallScore} size="lg" label="overall" />
+              <div className="text-center">
+                <div className="text-2xl font-bold text-teal-600">
+                  {Math.round(audit.baymardCompliance?.overallScore || 0)}%
+                </div>
+                <div className="text-sm text-gray-600">Baymard Compliant</div>
+              </div>
+            </div>
             <div className="flex flex-col sm:flex-row gap-2">
               <Button
                 icon="Download"
@@ -280,6 +288,105 @@ const AuditDetail = () => {
                     )}
                   </motion.div>
                 ))
+)}
+            </motion.div>
+          )}
+          
+          {activeTab === 'compliance' && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="space-y-6"
+            >
+              {audit.baymardCompliance ? (
+                <>
+                  {/* Compliance Overview */}
+                  <div className="bg-gradient-to-r from-teal-50 to-blue-50 rounded-lg p-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        Baymard Institute Compliance Overview
+                      </h3>
+                      <Badge variant="info" size="md">
+                        {audit.baymardCompliance.guidelinesChecked} Guidelines Checked
+                      </Badge>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div className="text-center">
+                        <div className="text-3xl font-bold text-teal-600 mb-1">
+                          {Math.round(audit.baymardCompliance.overallScore)}%
+                        </div>
+                        <div className="text-sm text-gray-600">Overall Compliance</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-3xl font-bold text-green-600 mb-1">
+                          {audit.baymardCompliance.passedGuidelines}
+                        </div>
+                        <div className="text-sm text-gray-600">Guidelines Passed</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-3xl font-bold text-red-600 mb-1">
+                          {audit.baymardCompliance.failedGuidelines}
+                        </div>
+                        <div className="text-sm text-gray-600">Guidelines Failed</div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Category Breakdown */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {Object.entries(audit.baymardCompliance.categoryScores).map(([category, score]) => (
+                      <div key={category} className="bg-white border rounded-lg p-6 hover:shadow-md transition-shadow">
+                        <div className="flex items-center justify-between mb-4">
+                          <h4 className="font-semibold text-gray-900 capitalize">
+                            {category.replace(/([A-Z])/g, ' $1').trim()}
+                          </h4>
+                          <Badge variant={score >= 80 ? 'success' : score >= 60 ? 'warning' : 'error'}>
+                            {Math.round(score)}%
+                          </Badge>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-2">
+                          <div 
+                            className={`h-2 rounded-full transition-all duration-300 ${
+                              score >= 80 ? 'bg-green-500' : score >= 60 ? 'bg-yellow-500' : 'bg-red-500'
+                            }`}
+                            style={{ width: `${score}%` }}
+                          />
+                        </div>
+                        <div className="mt-3 text-sm text-gray-600">
+                          Based on {audit.baymardCompliance.categoryDetails[category]?.total || 0} guidelines
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  {/* Top Recommendations */}
+                  <div className="bg-white border rounded-lg p-6">
+                    <h4 className="font-semibold text-gray-900 mb-4">Top Baymard Recommendations</h4>
+                    <div className="space-y-3">
+                      {audit.baymardCompliance.topRecommendations.map((rec, index) => (
+                        <div key={index} className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
+                          <div className="w-6 h-6 bg-teal-500 text-white rounded-full flex items-center justify-center text-xs font-semibold flex-shrink-0">
+                            {index + 1}
+                          </div>
+                          <div className="flex-1">
+                            <h5 className="font-medium text-gray-900 mb-1">{rec.title}</h5>
+                            <p className="text-sm text-gray-600">{rec.description}</p>
+                            <div className="flex items-center space-x-2 mt-2">
+                              <Badge variant="info" size="sm">{rec.category}</Badge>
+                              <span className="text-xs text-gray-500">Study #{rec.studyId}</span>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <div className="text-center py-12">
+                  <ApperIcon name="Award" className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">No Compliance Data</h3>
+                  <p className="text-gray-600">Baymard compliance analysis is not available for this audit.</p>
+                </div>
               )}
             </motion.div>
           )}

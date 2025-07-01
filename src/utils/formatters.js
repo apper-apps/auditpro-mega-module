@@ -61,6 +61,24 @@ export const getSeverityBadgeVariant = (severity) => {
     high: 'high',
     medium: 'medium',
     low: 'low'
-  }
+}
   return variants[severity] || 'default'
+}
+
+export const getBaymardComplianceColor = (score) => {
+  if (score >= 90) return 'text-green-600'
+  if (score >= 80) return 'text-yellow-600'
+  if (score >= 70) return 'text-orange-600'
+  return 'text-red-600'
+}
+
+export const getBaymardComplianceBadgeVariant = (score) => {
+  if (score >= 90) return 'success'
+  if (score >= 80) return 'warning'
+  if (score >= 70) return 'error'
+  return 'critical'
+}
+
+export const formatBaymardScore = (score) => {
+  return `${Math.round(score)}% Baymard Compliant`
 }

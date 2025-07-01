@@ -1,3 +1,80 @@
+// Baymard Institute UX Guidelines Database
+// Baymard Institute UX Guidelines Database
+const baymardGuidelines = {
+  checkout: [
+    { id: 'B001', title: 'Guest Checkout Option', weight: 10, study: 156 },
+    { id: 'B002', title: 'Transparent Pricing', weight: 9, study: 201 },
+    { id: 'B003', title: 'Security Indicators', weight: 8, study: 89 },
+    { id: 'B004', title: 'Form Field Validation', weight: 7, study: 178 },
+    { id: 'B005', title: 'Progress Indicators', weight: 6, study: 145 },
+    { id: 'B006', title: 'Error Recovery', weight: 8, study: 134 },
+    { id: 'B007', title: 'Payment Method Clarity', weight: 7, study: 167 },
+    { id: 'B008', title: 'Shipping Options', weight: 6, study: 189 },
+    { id: 'B009', title: 'Address Validation', weight: 5, study: 123 },
+    { id: 'B010', title: 'Mobile Optimization', weight: 9, study: 198 }
+  ],
+  navigation: [
+    { id: 'B011', title: 'Breadcrumb Navigation', weight: 7, study: 142 },
+    { id: 'B012', title: 'Search Functionality', weight: 9, study: 156 },
+    { id: 'B013', title: 'Category Hierarchy', weight: 8, study: 134 },
+    { id: 'B014', title: 'Mobile Menu Design', weight: 8, study: 189 },
+    { id: 'B015', title: 'Footer Navigation', weight: 5, study: 145 },
+    { id: 'B016', title: 'Site Logo Placement', weight: 6, study: 167 },
+    { id: 'B017', title: 'Contact Information', weight: 7, study: 178 },
+    { id: 'B018', title: 'Search Suggestions', weight: 6, study: 198 },
+    { id: 'B019', title: 'Category Filtering', weight: 7, study: 123 },
+    { id: 'B020', title: 'Navigation Consistency', weight: 8, study: 201 }
+  ],
+  productPages: [
+    { id: 'B021', title: 'Product Image Quality', weight: 9, study: 67 },
+    { id: 'B022', title: 'Zoom Functionality', weight: 8, study: 89 },
+    { id: 'B023', title: 'Size Information', weight: 7, study: 23 },
+    { id: 'B024', title: 'Product Reviews', weight: 8, study: 156 },
+    { id: 'B025', title: 'Stock Availability', weight: 6, study: 134 },
+    { id: 'B026', title: 'Product Variations', weight: 7, study: 178 },
+    { id: 'B027', title: 'Related Products', weight: 5, study: 145 },
+    { id: 'B028', title: 'Price Comparison', weight: 6, study: 167 },
+    { id: 'B029', title: 'Technical Specifications', weight: 7, study: 189 },
+    { id: 'B030', title: 'Add to Cart Visibility', weight: 9, study: 198 }
+  ],
+  filtering: [
+    { id: 'B031', title: 'Filter Usability', weight: 8, study: 134 },
+    { id: 'B032', title: 'Filter Clarity', weight: 7, study: 156 },
+    { id: 'B033', title: 'Sort Options', weight: 6, study: 178 },
+    { id: 'B034', title: 'Filter Persistence', weight: 5, study: 145 },
+    { id: 'B035', title: 'Result Counts', weight: 6, study: 167 },
+    { id: 'B036', title: 'Filter Combinations', weight: 7, study: 189 },
+    { id: 'B037', title: 'Clear All Filters', weight: 5, study: 198 },
+    { id: 'B038', title: 'Filter Loading States', weight: 4, study: 123 },
+    { id: 'B039', title: 'Mobile Filter Design', weight: 8, study: 201 },
+    { id: 'B040', title: 'Filter Suggestions', weight: 6, study: 89 }
+  ],
+  trustSignals: [
+    { id: 'B041', title: 'Security Badges', weight: 8, study: 89 },
+    { id: 'B042', title: 'Customer Reviews', weight: 9, study: 156 },
+    { id: 'B043', title: 'Return Policy', weight: 7, study: 134 },
+    { id: 'B044', title: 'Contact Information', weight: 6, study: 178 },
+    { id: 'B045', title: 'Privacy Policy', weight: 5, study: 145 },
+    { id: 'B046', title: 'Company Information', weight: 6, study: 167 },
+    { id: 'B047', title: 'SSL Certificates', weight: 7, study: 189 },
+    { id: 'B048', title: 'Professional Design', weight: 8, study: 198 },
+    { id: 'B049', title: 'Social Proof', weight: 7, study: 123 },
+    { id: 'B050', title: 'Warranty Information', weight: 5, study: 201 }
+  ],
+  mobile: [
+    { id: 'B051', title: 'Touch Target Size', weight: 9, study: 189 },
+    { id: 'B052', title: 'Responsive Design', weight: 8, study: 198 },
+    { id: 'B053', title: 'Mobile Navigation', weight: 8, study: 142 },
+    { id: 'B054', title: 'Form Input Design', weight: 7, study: 178 },
+    { id: 'B055', title: 'Loading Performance', weight: 8, study: 156 },
+    { id: 'B056', title: 'Scroll Behavior', weight: 6, study: 134 },
+    { id: 'B057', title: 'Gesture Support', weight: 7, study: 167 },
+    { id: 'B058', title: 'Viewport Optimization', weight: 6, study: 145 },
+    { id: 'B059', title: 'Mobile Checkout', weight: 9, study: 201 },
+    { id: 'B060', title: 'App Store Optimization', weight: 5, study: 123 }
+  ]
+}
+
 const mockAudits = [
   {
     Id: 1,
@@ -94,7 +171,49 @@ const mockAudits = [
           }
         ]
       }
-    ]
+],
+    baymardCompliance: {
+      overallScore: 78,
+      guidelinesChecked: 25,
+      passedGuidelines: 19,
+      failedGuidelines: 6,
+      categoryScores: {
+        checkout: 85,
+        navigation: 72,
+        productPages: 90,
+        filtering: 68,
+        trustSignals: 75,
+        mobile: 80
+      },
+      categoryDetails: {
+        checkout: { passed: 8, failed: 2, total: 10 },
+        navigation: { passed: 7, failed: 3, total: 10 },
+        productPages: { passed: 9, failed: 1, total: 10 },
+        filtering: { passed: 6, failed: 4, total: 10 },
+        trustSignals: { passed: 7, failed: 3, total: 10 },
+        mobile: { passed: 8, failed: 2, total: 10 }
+      },
+      topRecommendations: [
+        {
+          title: 'Implement Guest Checkout',
+          description: 'Allow users to complete purchases without creating an account',
+          category: 'Checkout',
+          studyId: 'B001'
+        },
+        {
+          title: 'Improve Mobile Navigation',
+          description: 'Enhance mobile menu hierarchy and usability',
+          category: 'Navigation',
+          studyId: 'B014'
+        },
+        {
+          title: 'Add Security Badges',
+          description: 'Display trust signals prominently in checkout area',
+          category: 'Trust Signals',
+          studyId: 'B041'
+        }
+      ]
+    }
   },
   {
     Id: 2,
@@ -174,7 +293,43 @@ const mockAudits = [
           }
         ]
       }
-    ]
+],
+    baymardCompliance: {
+      overallScore: 85,
+      guidelinesChecked: 20,
+      passedGuidelines: 17,
+      failedGuidelines: 3,
+      categoryScores: {
+        checkout: 90,
+        navigation: 88,
+        productPages: 78,
+        filtering: 85,
+        trustSignals: 92,
+        mobile: 82
+      },
+      categoryDetails: {
+        checkout: { passed: 9, failed: 1, total: 10 },
+        navigation: { passed: 8, failed: 2, total: 10 },
+        productPages: { passed: 7, failed: 3, total: 10 },
+        filtering: { passed: 8, failed: 2, total: 10 },
+        trustSignals: { passed: 9, failed: 1, total: 10 },
+        mobile: { passed: 8, failed: 2, total: 10 }
+      },
+      topRecommendations: [
+        {
+          title: 'Add Product Image Zoom',
+          description: 'Implement zoom functionality for better product inspection',
+          category: 'Product Pages',
+          studyId: 'B022'
+        },
+        {
+          title: 'Improve Size Guide Access',
+          description: 'Make size information more prominent and accessible',
+          category: 'Product Pages',
+          studyId: 'B023'
+        }
+      ]
+    }
   },
   {
     Id: 3,
@@ -261,7 +416,49 @@ const mockAudits = [
           }
         ]
       }
-    ]
+],
+    baymardCompliance: {
+      overallScore: 72,
+      guidelinesChecked: 30,
+      passedGuidelines: 21,
+      failedGuidelines: 9,
+      categoryScores: {
+        checkout: 45,
+        navigation: 82,
+        productPages: 88,
+        filtering: 75,
+        trustSignals: 70,
+        mobile: 78
+      },
+      categoryDetails: {
+        checkout: { passed: 4, failed: 6, total: 10 },
+        navigation: { passed: 8, failed: 2, total: 10 },
+        productPages: { passed: 8, failed: 2, total: 10 },
+        filtering: { passed: 7, failed: 3, total: 10 },
+        trustSignals: { passed: 7, failed: 3, total: 10 },
+        mobile: { passed: 7, failed: 3, total: 10 }
+      },
+      topRecommendations: [
+        {
+          title: 'Add Guest Checkout Option',
+          description: 'Critical: Implement guest checkout to reduce cart abandonment',
+          category: 'Checkout',
+          studyId: 'B001'
+        },
+        {
+          title: 'Display Shipping Costs Earlier',
+          description: 'Show shipping costs before final checkout step',
+          category: 'Checkout',
+          studyId: 'B002'
+        },
+        {
+          title: 'Improve Security Indicators',
+          description: 'Add more visible security badges and trust signals',
+          category: 'Trust Signals',
+          studyId: 'B041'
+        }
+      ]
+    }
   },
   {
     Id: 4,
@@ -329,9 +526,39 @@ const mockAudits = [
             height: 50,
             text: "Filter sidebar could use more user-friendly language and better organization"
           }
-        ]
+]
       }
-    ]
+    ],
+    baymardCompliance: {
+      overallScore: 91,
+      guidelinesChecked: 15,
+      passedGuidelines: 14,
+      failedGuidelines: 1,
+      categoryScores: {
+        checkout: 95,
+        navigation: 92,
+        productPages: 88,
+        filtering: 82,
+        trustSignals: 94,
+        mobile: 90
+      },
+      categoryDetails: {
+        checkout: { passed: 9, failed: 1, total: 10 },
+        navigation: { passed: 9, failed: 1, total: 10 },
+        productPages: { passed: 8, failed: 2, total: 10 },
+        filtering: { passed: 8, failed: 2, total: 10 },
+        trustSignals: { passed: 9, failed: 1, total: 10 },
+        mobile: { passed: 9, failed: 1, total: 10 }
+      },
+      topRecommendations: [
+        {
+          title: 'Improve Filter Labels',
+          description: 'Use more user-friendly language for filter categories',
+          category: 'Filtering',
+          studyId: 'B032'
+        }
+      ]
+    }
   }
 ]
 
@@ -385,9 +612,90 @@ class AuditService {
     return true
   }
   
-  delay(ms) {
+delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms))
   }
-}
+  // Calculate Baymard compliance score based on issues and guidelines
+  calculateBaymardCompliance(audit) {
+    const categoryScores = {}
+    const categoryDetails = {}
+    let totalScore = 0
+    let totalGuidelines = 0
+    
+    // Calculate scores for each category
+    Object.entries(baymardGuidelines).forEach(([category, guidelines]) => {
+      let categoryScore = 0
+      let passed = 0
+      let failed = 0
+      
+      guidelines.forEach(guideline => {
+        // Check if audit has issues related to this guideline
+        const hasIssue = audit.issues.some(issue => 
+          issue.guidelineRef && issue.guidelineRef.includes(guideline.study.toString())
+        )
+        
+        if (hasIssue) {
+          failed++
+        } else {
+          passed++
+          categoryScore += guideline.weight
+        }
+      })
+      
+      const maxCategoryScore = guidelines.reduce((sum, g) => sum + g.weight, 0)
+      const categoryPercentage = maxCategoryScore > 0 ? (categoryScore / maxCategoryScore) * 100 : 100
+      
+      categoryScores[category] = Math.max(0, Math.min(100, categoryPercentage))
+      categoryDetails[category] = {
+        passed,
+        failed,
+        total: guidelines.length
+      }
+      
+      totalScore += categoryScores[category]
+      totalGuidelines += guidelines.length
+    })
+    
+    const overallScore = totalScore / Object.keys(baymardGuidelines).length
+    const passedGuidelines = Object.values(categoryDetails).reduce((sum, cat) => sum + cat.passed, 0)
+    const failedGuidelines = Object.values(categoryDetails).reduce((sum, cat) => sum + cat.failed, 0)
+    
+    // Generate top recommendations based on failed guidelines
+    const topRecommendations = []
+    if (failedGuidelines > 0) {
+      // Add category-specific recommendations based on lowest scores
+      const sortedCategories = Object.entries(categoryScores)
+        .sort(([,a], [,b]) => a - b)
+        .slice(0, 3)
+      
+      sortedCategories.forEach(([category, score]) => {
+        if (score < 90) {
+          const categoryGuidelines = baymardGuidelines[category]
+          const topGuideline = categoryGuidelines.find(g => 
+            audit.issues.some(issue => 
+              issue.guidelineRef && issue.guidelineRef.includes(g.study.toString())
+            )
+          ) || categoryGuidelines[0]
+          
+          topRecommendations.push({
+            title: `Improve ${topGuideline.title}`,
+            description: `Address ${category} issues to improve user experience`,
+            category: category.charAt(0).toUpperCase() + category.slice(1),
+            studyId: topGuideline.id
+          })
+        }
+      })
+    }
+    
+    return {
+      overallScore: Math.round(overallScore),
+      guidelinesChecked: totalGuidelines,
+      passedGuidelines,
+      failedGuidelines,
+      categoryScores,
+      categoryDetails,
+      topRecommendations
+    }
+  }
 
 export const auditService = new AuditService()
