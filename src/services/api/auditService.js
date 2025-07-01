@@ -675,61 +675,8 @@ class AuditService {
     }
     
     throw lastError
-  }
-class AuditService {
-  constructor() {
-    this.audits = [...mockAudits]
-  }
-  
-  async getAll() {
-    await this.delay(300)
-    return [...this.audits]
-  }
-  
-  async getById(id) {
-    await this.delay(250)
-    const audit = this.audits.find(audit => audit.Id === id)
-    if (!audit) {
-      throw new Error(`Audit with Id ${id} not found`)
-    }
-    return { ...audit }
-  }
-  
-  async create(auditData) {
-    await this.delay(400)
-    const newAudit = {
-      ...auditData,
-      Id: Math.max(...this.audits.map(a => a.Id)) + 1,
-      timestamp: new Date().toISOString()
-    }
-    this.audits.unshift(newAudit)
-    return { ...newAudit }
-  }
-  
-  async update(id, updateData) {
-    await this.delay(350)
-    const index = this.audits.findIndex(audit => audit.Id === id)
-    if (index === -1) {
-      throw new Error(`Audit with Id ${id} not found`)
-    }
-    this.audits[index] = { ...this.audits[index], ...updateData }
-    return { ...this.audits[index] }
-  }
-  
-  async delete(id) {
-    await this.delay(300)
-    const index = this.audits.findIndex(audit => audit.Id === id)
-    if (index === -1) {
-      throw new Error(`Audit with Id ${id} not found`)
-    }
-this.audits.splice(index, 1)
-    return true
-  }
-  
-  async delay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms))
-  }
-  
+}
+
   // Calculate Baymard compliance score based on issues and guidelines
   calculateBaymardCompliance(audit) {
     const categoryScores = {}
@@ -810,7 +757,7 @@ this.audits.splice(index, 1)
       categoryScores,
       categoryDetails,
       topRecommendations
-}
+    }
   }
 
   // Perform comprehensive audit with realistic simulation
@@ -832,7 +779,8 @@ this.audits.splice(index, 1)
         progress: 5,
         message: `Connecting to ${auditData.storeUrl}...`
       })
-await this.delay(phases[0].duration)
+      
+      await this.delay(phases[0].duration)
       
       // Perform actual URL validation
       try {
@@ -1126,4 +1074,6 @@ await this.delay(phases[0].duration)
     }]
   }
 }
+
+export const auditService = new AuditService()
 export const auditService = new AuditService()
