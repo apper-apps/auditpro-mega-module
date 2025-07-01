@@ -3,6 +3,7 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Layout from '@/components/organisms/Layout'
 import Dashboard from '@/components/pages/Dashboard'
+import AuditCreate from '@/components/pages/AuditCreate'
 import AuditDetail from '@/components/pages/AuditDetail'
 import Reports from '@/components/pages/Reports'
 import Benchmarks from '@/components/pages/Benchmarks'
@@ -12,8 +13,9 @@ function App() {
   return (
     <div className="min-h-screen bg-white">
       <Layout>
-        <Routes>
+<Routes>
           <Route path="/" element={<Dashboard />} />
+          <Route path="/audit/new" element={<AuditCreate />} />
           <Route path="/audit/:id" element={<AuditDetail />} />
           <Route path="/reports" element={<Reports />} />
           <Route path="/benchmarks" element={<Benchmarks />} />

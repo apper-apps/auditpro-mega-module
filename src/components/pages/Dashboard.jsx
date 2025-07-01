@@ -35,8 +35,8 @@ const Dashboard = () => {
     loadAudits()
   }, [])
   
-  const handleCreateAudit = () => {
-    toast.info('Audit creation feature coming soon!')
+const handleCreateAudit = () => {
+    navigate('/audit/new')
   }
   
   const handleViewAudit = (auditId) => {

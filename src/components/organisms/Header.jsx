@@ -1,8 +1,14 @@
 import { motion } from 'framer-motion'
+import { useNavigate } from 'react-router-dom'
 import ApperIcon from '@/components/ApperIcon'
 import Button from '@/components/atoms/Button'
 
 const Header = ({ onMenuToggle, title = "Dashboard" }) => {
+  const navigate = useNavigate()
+  
+  const handleCreateAudit = () => {
+    navigate('/audit/new')
+  }
   return (
     <motion.header
       initial={{ opacity: 0, y: -20 }}
@@ -56,7 +62,7 @@ const Header = ({ onMenuToggle, title = "Dashboard" }) => {
               <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
             </motion.button>
             
-            <Button size="sm" icon="Plus">
+<Button size="sm" icon="Plus" onClick={handleCreateAudit}>
               New Audit
             </Button>
           </div>
