@@ -1,0 +1,32 @@
+[
+  {
+    "Id": 1,
+    "industry": "fashion",
+    "metric": "overall_score",
+    "average": 72,
+    "topPerformers": 85,
+    "bottomPerformers": 58,
+    "sampleSize": 150,
+    "lastUpdated": "2024-01-15T00:00:00Z"
+  },
+  {
+    "Id": 2,
+    "industry": "electronics",
+    "metric": "overall_score",
+    "average": 68,
+    "topPerformers": 82,
+    "bottomPerformers": 54,
+    "sampleSize": 200,
+    "lastUpdated": "2024-01-15T00:00:00Z"
+  },
+  {
+    "Id": 3,
+    "industry": "beauty",
+    "metric": "overall_score",
+    "average": 75,
+    "topPerformers": 88,
+    "bottomPerformers": 62,
+    "sampleSize": 120,
+    "lastUpdated": "2024-01-15T00:00:00Z"
+  }
+]

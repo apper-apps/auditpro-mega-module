@@ -1,0 +1,76 @@
+[
+  {
+    "Id": 1,
+    "storeUrl": "shopify-store-demo.myshopify.com",
+    "pageType": "homepage",
+    "timestamp": "2024-01-15T10:30:00Z",
+    "overallScore": 78,
+    "issues": [
+      {
+        "Id": 1,
+        "category": "Navigation",
+        "severity": "high",
+        "title": "Mobile menu lacks clear hierarchy",
+        "description": "The mobile navigation menu doesn't provide clear visual hierarchy, making it difficult for users to understand the site structure.",
+        "location": {
+          "selector": ".mobile-nav",
+          "x": 10,
+          "y": 50
+        },
+        "guidelineRef": "Baymard #142: Mobile Navigation Patterns",
+        "timestamp": "2024-01-15T10:30:00Z"
+      }
+    ],
+    "recommendations": [
+      {
+        "Id": 1,
+        "issueId": "1",
+        "priority": 1,
+        "problem": [
+          "Users struggle to find key navigation items on mobile",
+          "Menu hierarchy is unclear leading to confusion",
+          "Important sections are buried in sub-menus"
+        ],
+        "solutions": {
+          "copywriting": [
+            "Use clear, descriptive menu labels",
+            "Prioritize most important categories first",
+            "Add brief descriptions for complex categories"
+          ],
+          "uiux": [
+            "Implement accordion-style navigation",
+            "Use visual hierarchy with font sizes and colors",
+            "Add icons to improve recognition"
+          ]
+        },
+        "estimatedImpact": {
+          "conversion": "+12%",
+          "bounceRate": "-8%",
+          "timeOnPage": "+25%",
+          "userSatisfaction": "+15%"
+        },
+        "resources": [
+          "Baymard Mobile Navigation",
+          "Material Design Guidelines",
+          "Apple HIG Navigation"
+        ]
+      }
+    ],
+    "screenshots": [
+      {
+        "Id": 1,
+        "url": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=1200&fit=crop",
+        "pageSection": "homepage",
+        "annotations": [
+          {
+            "x": 10,
+            "y": 5,
+            "width": 80,
+            "height": 15,
+            "text": "Navigation bar needs better visual hierarchy and mobile optimization"
+          }
+        ]
+      }
+    ]
+  }
+]
