@@ -1,3 +1,5 @@
+import React from "react";
+import Error from "@/components/ui/Error";
 // Baymard Institute UX Guidelines Database
 // Baymard Institute UX Guidelines Database
 const baymardGuidelines = {
@@ -608,13 +610,14 @@ class AuditService {
     if (index === -1) {
       throw new Error(`Audit with Id ${id} not found`)
     }
-    this.audits.splice(index, 1)
+this.audits.splice(index, 1)
     return true
   }
   
-delay(ms) {
+  async delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms))
   }
+  
   // Calculate Baymard compliance score based on issues and guidelines
   calculateBaymardCompliance(audit) {
     const categoryScores = {}
