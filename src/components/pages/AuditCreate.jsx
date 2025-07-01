@@ -1,10 +1,10 @@
-import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
-import Button from '@/components/atoms/Button'
-import ApperIcon from '@/components/ApperIcon'
-import { auditService } from '@/services/api/auditService'
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import ApperIcon from "@/components/ApperIcon";
+import Button from "@/components/atoms/Button";
+import { auditService } from "@/services/api/auditService";
 
 const AuditCreate = () => {
   const navigate = useNavigate()
@@ -14,6 +14,11 @@ const AuditCreate = () => {
   })
   const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState({})
+  const [auditProgress, setAuditProgress] = useState({
+    phase: '',
+    progress: 0,
+    message: ''
+  })
 
   const pageTypes = [
     { value: 'homepage', label: 'Homepage', icon: 'Home' },
@@ -53,7 +58,7 @@ const AuditCreate = () => {
     }
   }
 
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
     e.preventDefault()
     
     if (!validateForm()) {
@@ -62,6 +67,7 @@ const AuditCreate = () => {
     }
 
     setLoading(true)
+    setAuditProgress({ phase: 'Starting audit...', progress: 0, message: '' })
     
     try {
       // Clean the URL
@@ -69,30 +75,26 @@ const AuditCreate = () => {
       
       const auditData = {
         storeUrl: cleanUrl,
-        pageType: formData.pageType,
-        overallScore: Math.floor(Math.random() * 40) + 60, // Random score between 60-100
-        issues: [], // Will be populated by the audit process
-        recommendations: [],
-        screenshots: [],
-        baymardCompliance: {
-          overallScore: Math.floor(Math.random() * 40) + 60,
-          guidelinesChecked: 0,
-          passedGuidelines: 0,
-          failedGuidelines: 0,
-          categoryScores: {},
-          categoryDetails: {},
-          topRecommendations: []
-        }
+        pageType: formData.pageType
       }
       
-      const newAudit = await auditService.create(auditData)
-      toast.success('Audit created successfully!')
+      // Perform comprehensive audit with progress tracking
+      const newAudit = await auditService.performAudit(auditData, (progress) => {
+        setAuditProgress({
+          phase: progress.phase,
+          progress: progress.progress,
+          message: progress.message
+        })
+      })
+      
+      toast.success('Audit completed successfully!')
       navigate(`/audit/${newAudit.Id}`)
     } catch (error) {
-      console.error('Error creating audit:', error)
-      toast.error('Failed to create audit. Please try again.')
+      console.error('Error performing audit:', error)
+      toast.error(error.message || 'Failed to complete audit. Please try again.')
     } finally {
       setLoading(false)
+      setAuditProgress({ phase: '', progress: 0, message: '' })
     }
   }
 
@@ -233,7 +235,7 @@ const AuditCreate = () => {
               className="sm:order-1"
             >
               Cancel
-            </Button>
+</Button>
             <Button
               type="submit"
               variant="primary"
@@ -241,9 +243,40 @@ const AuditCreate = () => {
               disabled={loading}
               className="sm:order-2"
             >
-              {loading ? 'Creating Audit...' : 'Start Audit'}
+              {loading ? (auditProgress.phase || 'Starting Audit...') : 'Start Audit'}
             </Button>
           </div>
+          
+          {/* Progress Indicator */}
+          {loading && (
+            <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium text-blue-900">
+                  Audit Progress
+                </span>
+                <span className="text-sm text-blue-700">
+                  {auditProgress.progress}%
+                </span>
+              </div>
+              <div className="w-full bg-blue-200 rounded-full h-2 mb-2">
+                <div 
+                  className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                  style={{ width: `${auditProgress.progress}%` }}
+                ></div>
+              </div>
+              <div className="flex items-center space-x-2">
+                <ApperIcon name="Loader2" className="w-4 h-4 text-blue-600 animate-spin" />
+                <span className="text-sm text-blue-800">
+                  {auditProgress.phase}
+                </span>
+              </div>
+              {auditProgress.message && (
+                <p className="mt-1 text-xs text-blue-700">
+                  {auditProgress.message}
+                </p>
+              )}
+            </div>
+          )}
         </form>
       </motion.div>
     </div>

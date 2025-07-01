@@ -695,8 +695,319 @@ this.audits.splice(index, 1)
       categoryScores,
       categoryDetails,
       topRecommendations
-    }
 }
-}
+  }
 
+  // Perform comprehensive audit with realistic simulation
+  async performAudit(auditData, progressCallback) {
+    const phases = [
+      { name: 'Validating URL and connectivity', duration: 1500, weight: 15 },
+      { name: 'Analyzing page structure and content', duration: 3000, weight: 25 },
+      { name: 'Detecting UX issues and accessibility problems', duration: 2500, weight: 25 },
+      { name: 'Checking Baymard Institute compliance', duration: 2000, weight: 20 },
+      { name: 'Generating recommendations and report', duration: 1500, weight: 15 }
+    ]
+    
+    let totalProgress = 0
+    
+    try {
+      // Phase 1: URL Validation
+      progressCallback({
+        phase: phases[0].name,
+        progress: 5,
+        message: `Connecting to ${auditData.storeUrl}...`
+      })
+      
+      await this.delay(phases[0].duration)
+      
+      // Simulate URL validation
+      if (Math.random() < 0.05) { // 5% chance of URL validation failure
+        throw new Error('Unable to access the provided URL. Please check if the store is accessible.')
+      }
+      
+      totalProgress += phases[0].weight
+      progressCallback({
+        phase: phases[0].name,
+        progress: totalProgress,
+        message: 'Connection established successfully'
+      })
+      
+      // Phase 2: Page Analysis
+      progressCallback({
+        phase: phases[1].name,
+        progress: totalProgress + 5,
+        message: 'Scanning page elements and structure...'
+      })
+      
+      await this.delay(phases[1].duration)
+      totalProgress += phases[1].weight
+      
+      progressCallback({
+        phase: phases[1].name,
+        progress: totalProgress,
+        message: 'Page analysis complete'
+      })
+      
+      // Phase 3: Issue Detection
+      progressCallback({
+        phase: phases[2].name,
+        progress: totalProgress + 5,
+        message: 'Evaluating user experience patterns...'
+      })
+      
+      await this.delay(phases[2].duration)
+      
+      // Generate issues based on page type
+      const issues = this.generateIssuesForPageType(auditData.pageType, auditData.storeUrl)
+      const recommendations = this.generateRecommendationsForIssues(issues)
+      
+      totalProgress += phases[2].weight
+      progressCallback({
+        phase: phases[2].name,
+        progress: totalProgress,
+        message: `Found ${issues.length} areas for improvement`
+      })
+      
+      // Phase 4: Baymard Compliance
+      progressCallback({
+        phase: phases[3].name,
+        progress: totalProgress + 5,
+        message: 'Checking against Baymard Institute guidelines...'
+      })
+      
+      await this.delay(phases[3].duration)
+      
+      const mockAudit = { issues, storeUrl: auditData.storeUrl }
+      const baymardCompliance = this.calculateBaymardCompliance(mockAudit)
+      
+      totalProgress += phases[3].weight
+      progressCallback({
+        phase: phases[3].name,
+        progress: totalProgress,
+        message: `Compliance score: ${baymardCompliance.overallScore}%`
+      })
+      
+      // Phase 5: Report Generation
+      progressCallback({
+        phase: phases[4].name,
+        progress: totalProgress + 5,
+        message: 'Compiling final report...'
+      })
+      
+      await this.delay(phases[4].duration)
+      
+      const screenshots = this.generateScreenshotsForPageType(auditData.pageType)
+      
+      const finalAuditData = {
+        ...auditData,
+        overallScore: baymardCompliance.overallScore,
+        issues,
+        recommendations,
+        screenshots,
+        baymardCompliance
+      }
+      
+      totalProgress = 100
+      progressCallback({
+        phase: 'Audit completed',
+        progress: totalProgress,
+        message: 'Report generated successfully'
+      })
+      
+      // Create the audit record
+      return await this.create(finalAuditData)
+      
+    } catch (error) {
+      // Handle audit errors
+      throw new Error(error.message || 'Audit process failed. Please try again.')
+    }
+  }
+  
+  // Generate issues based on page type
+  generateIssuesForPageType(pageType, storeUrl) {
+    const baseIssues = {
+      homepage: [
+        {
+          category: "Navigation",
+          severity: "high",
+          title: "Mobile menu lacks clear hierarchy",
+          description: "The mobile navigation menu doesn't provide clear visual hierarchy, making it difficult for users to understand the site structure.",
+          location: { selector: ".mobile-nav", x: 10, y: 50 },
+          guidelineRef: "Baymard #142: Mobile Navigation Patterns"
+        },
+        {
+          category: "Call to Action",
+          severity: "medium",
+          title: "Primary CTA could be more prominent",
+          description: "The main call-to-action button could benefit from better visual prominence and contrast.",
+          location: { selector: ".primary-cta", x: 45, y: 60 },
+          guidelineRef: "WCAG 2.1 AA Contrast Requirements"
+        }
+      ],
+      product: [
+        {
+          category: "Product Images",
+          severity: "medium",
+          title: "Missing zoom functionality",
+          description: "Product images lack zoom functionality which is essential for detailed product inspection.",
+          location: { selector: ".product-images", x: 25, y: 30 },
+          guidelineRef: "Baymard #67: Product Image Display"
+        },
+        {
+          category: "Product Information",
+          severity: "low",
+          title: "Size guide accessibility",
+          description: "Size guide could be more prominently displayed and easily accessible.",
+          location: { selector: ".size-info", x: 70, y: 45 },
+          guidelineRef: "Baymard #23: Size & Fit Information"
+        }
+      ],
+      collection: [
+        {
+          category: "Filtering",
+          severity: "medium",
+          title: "Filter options could be more intuitive",
+          description: "Some filter categories use technical terms that might not be familiar to average users.",
+          location: { selector: ".filter-sidebar", x: 10, y: 40 },
+          guidelineRef: "Baymard #134: Product Filtering UX"
+        }
+      ],
+      cart: [
+        {
+          category: "Checkout Flow",
+          severity: "critical",
+          title: "Consider adding guest checkout option",
+          description: "Offering guest checkout can significantly reduce cart abandonment rates.",
+          location: { selector: ".checkout-form", x: 30, y: 20 },
+          guidelineRef: "Baymard #156: Guest Checkout Options"
+        },
+        {
+          category: "Shipping Information",
+          severity: "high",
+          title: "Shipping cost transparency",
+          description: "Consider showing estimated shipping costs earlier in the checkout process.",
+          location: { selector: ".shipping-info", x: 50, y: 75 },
+          guidelineRef: "Baymard #201: Transparent Pricing"
+        }
+      ],
+      search: [
+        {
+          category: "Search Results",
+          severity: "medium",
+          title: "Search result relevance",
+          description: "Search results could benefit from improved relevance algorithms.",
+          location: { selector: ".search-results", x: 20, y: 30 },
+          guidelineRef: "Baymard #156: Search Functionality"
+        }
+      ],
+      other: [
+        {
+          category: "General UX",
+          severity: "medium",
+          title: "Page loading performance",
+          description: "Page loading times could be optimized for better user experience.",
+          location: { selector: "body", x: 0, y: 0 },
+          guidelineRef: "Web Performance Guidelines"
+        }
+      ]
+    }
+    
+    const issues = baseIssues[pageType] || baseIssues.other
+    
+    // Add random additional issues for variety
+    const additionalIssues = []
+    if (Math.random() > 0.6) {
+      additionalIssues.push({
+        category: "Trust Signals",
+        severity: "medium",
+        title: "Missing security badges",
+        description: "Adding visible security badges could increase user confidence.",
+        location: { selector: ".trust-area", x: 60, y: 80 },
+        guidelineRef: "Baymard #89: Trust & Security Indicators"
+      })
+    }
+    
+    if (Math.random() > 0.7) {
+      additionalIssues.push({
+        category: "Mobile Optimization",
+        severity: "high",
+        title: "Touch target sizes",
+        description: "Some interactive elements may be too small for comfortable mobile interaction.",
+        location: { selector: ".mobile-elements", x: 15, y: 25 },
+        guidelineRef: "Baymard #189: Touch Target Size"
+      })
+    }
+    
+    const allIssues = [...issues, ...additionalIssues].map((issue, index) => ({
+      ...issue,
+      Id: index + 1,
+      timestamp: new Date().toISOString()
+    }))
+    
+    return allIssues
+  }
+  
+  // Generate recommendations for issues
+  generateRecommendationsForIssues(issues) {
+    return issues.slice(0, 3).map((issue, index) => ({
+      Id: index + 1,
+      issueId: issue.Id.toString(),
+      priority: index + 1,
+      problem: [
+        issue.description,
+        "This affects user experience and conversion rates",
+        "Implementation should follow best practices"
+      ],
+      solutions: {
+        copywriting: [
+          "Review and improve messaging clarity",
+          "Use user-friendly language",
+          "Test different approaches with users"
+        ],
+        uiux: [
+          "Implement design improvements",
+          "Follow accessibility guidelines",
+          "Optimize for mobile devices"
+        ]
+      },
+      estimatedImpact: {
+        conversion: `+${Math.floor(Math.random() * 15) + 5}%`,
+        userExperience: `+${Math.floor(Math.random() * 20) + 10}%`,
+        accessibilityScore: `+${Math.floor(Math.random() * 10) + 5}%`
+      },
+      resources: [
+        "UX Best Practices Guide",
+        "Accessibility Guidelines",
+        "Conversion Optimization Resources"
+      ]
+    }))
+  }
+  
+  // Generate screenshots for page type
+  generateScreenshotsForPageType(pageType) {
+    const screenshots = {
+      homepage: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=1200&fit=crop",
+      product: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=1200&fit=crop",
+      collection: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&h=1200&fit=crop",
+      cart: "https://images.unsplash.com/photo-1556742111-a301076d9d18?w=800&h=1200&fit=crop",
+      search: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=1200&fit=crop",
+      other: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=1200&fit=crop"
+    }
+    
+    return [{
+      Id: 1,
+      url: screenshots[pageType] || screenshots.other,
+      pageSection: pageType,
+      annotations: [
+        {
+          x: 10,
+          y: 15,
+          width: 60,
+          height: 20,
+          text: "Key areas identified for improvement based on UX analysis"
+        }
+      ]
+    }]
+  }
+}
 export const auditService = new AuditService()
